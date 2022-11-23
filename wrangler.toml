@@ -1,0 +1,4 @@
+name = "line-bot-cf-worker-sample"
+main = "src/index.ts"
+compatibility_date = "2022-11-23"
+node_compat = true
