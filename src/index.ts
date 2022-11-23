@@ -1,6 +1,4 @@
 import {
-  Client,
-  ClientConfig,
   MessageAPIResponseBase,
   TextMessage,
   WebhookEvent,
@@ -13,16 +11,12 @@ app.get("*", (c) => c.text("Hello World!"));
 app.post("/api/webhook", async (c) => {
   const data = await c.req.json();
   const events: WebhookEvent[] = (data as any).events;
+  const accessToken: string = c.env.CHANNEL_ACCESS_TOKEN;
 
-  const clientConfig: ClientConfig = {
-    channelAccessToken: c.env.CHANNEL_ACCESS_TOKEN || "",
-    channelSecret: c.env.CHANNEL_SECRET,
-  };
-  const client = new Client(clientConfig);
   await Promise.all(
     events.map(async (event: WebhookEvent) => {
       try {
-        await textEventHandler(client, event);
+        await textEventHandler(event, accessToken);
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error(err);
@@ -37,8 +31,8 @@ app.post("/api/webhook", async (c) => {
 });
 
 const textEventHandler = async (
-  client: Client,
-  event: WebhookEvent
+  event: WebhookEvent,
+  accessToken: string
 ): Promise<MessageAPIResponseBase | undefined> => {
   if (event.type !== "message" || event.message.type !== "text") {
     return;
@@ -50,7 +44,17 @@ const textEventHandler = async (
     type: "text",
     text,
   };
-  await client.replyMessage(replyToken, response);
+  await fetch("https://api.line.me/v2/bot/message/reply", {
+    body: JSON.stringify({
+      replyToken: replyToken,
+      messages: [response],
+    }),
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export default app;
