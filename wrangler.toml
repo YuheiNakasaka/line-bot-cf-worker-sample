@@ -1,3 +1,8 @@
 name = "line-bot-cf-worker-sample"
 main = "src/index.ts"
 compatibility_date = "2022-11-23"
+
+[[ d1_databases ]]
+binding = "DB"
+database_name = "ai-bot-db"
+database_id = "ac2ece73-3409-438c-b9c9-5c844e3572f0"

@@ -170,3 +170,7 @@ dist
 
 .dev.vars
 .vscode
+
+model-list.json
+
+.wrangler
