@@ -14,7 +14,7 @@ export class Line {
   public async replyMessage(
     text: string,
     replyToken: string
-  ): Promise<Response> {
+  ): Promise<Response | null> {
     const message: TextMessage = {
       type: "text",
       text,
@@ -26,6 +26,9 @@ export class Line {
         replyToken: replyToken,
         messages: [message],
       }),
+    }).catch((err) => {
+      console.log(`LINE API error: ${err}`);
+      return null;
     });
   }
 }
