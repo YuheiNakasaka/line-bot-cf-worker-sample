@@ -24,7 +24,7 @@ export class OpenAI {
     const prompt = `${this.promptBase}${dialog.join("")}`;
     const data = JSON.stringify({
       prompt,
-      model: "text-davinci-002",
+      model: "text-ada-001",
       max_tokens: 15,
       temperature: 0.9,
       stop: "\n",
