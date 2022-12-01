@@ -25,7 +25,7 @@ export class OpenAI {
     const data = JSON.stringify({
       prompt,
       model: "text-ada-001",
-      max_tokens: 15,
+      max_tokens: 40,
       temperature: 0.9,
       stop: "\n",
     });
